@@ -36,7 +36,7 @@ test('light theme, overlays and saved preference', async ({ page }) => {
   await expect(page.locator('html')).toHaveClass('light')
   await page.getByRole('button', { name: 'Настроить канал', exact: true }).click()
   await expect(page.getByRole('dialog')).toBeVisible()
-  await expect(page.locator('.el-dialog')).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+  await expect(page.locator('.el-dialog')).toHaveCSS('background-color', 'rgb(237, 241, 238)')
   await page.getByRole('button', { name: 'Close this dialog' }).click()
   await expect(page.locator('.el-overlay')).toBeHidden()
   await page.screenshot({ path: '/tmp/flex-light.png', fullPage: true })

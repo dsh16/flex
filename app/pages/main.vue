@@ -1,6 +1,15 @@
 <script setup lang="ts">
-import { Users, MessageSquare, Settings, Link, Hash, Volume2, Plus, ChevronDown, ChevronsLeft, Bell, CircleHelp, Download, UserRound, UserRoundPlus, MessagesSquare, Paperclip, Smile, Send, Menu, Copy } from 'lucide-vue-next'
+import { Users, MessageSquare, Settings, Link, Hash, Volume2, Plus, ChevronDown, ChevronsLeft, Bell, CircleHelp, Download, UserRound, UserRoundPlus, MessagesSquare, Paperclip, Smile, Send, Menu, Copy, Sun, Moon } from 'lucide-vue-next'
 import { ElMessage } from 'element-plus'
+const theme = ref<'dark' | 'light'>('dark')
+useHead({ htmlAttrs: { class: computed(() => theme.value) } })
+onMounted(() => {
+  try { theme.value = localStorage.getItem('ets-theme') === 'light' ? 'light' : 'dark' } catch { /* Storage can be disabled by the browser. */ }
+})
+function toggleTheme() {
+  theme.value = theme.value === 'dark' ? 'light' : 'dark'
+  try { localStorage.setItem('ets-theme', theme.value) } catch { /* The theme still works without persistence. */ }
+}
 const channel = ref('test')
 const channels = ref(['FAQ', 'Random', 'test'])
 const message = ref('')
@@ -79,6 +88,7 @@ function attachFile(event: Event) {
         <button class="icon-button mobile-menu" aria-label="Открыть меню" @click="mobileOpen = true"><Menu /></button>
         <div class="channel-title"><Hash /><strong>{{ channel }}</strong></div>
         <div class="topbar-actions">
+          <button class="icon-button theme-toggle" :aria-label="theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'" :title="theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'" @click="toggleTheme"><Sun v-if="theme === 'dark'" /><Moon v-else /></button>
           <button class="icon-button notification-button" :class="{ muted: !notifications }" :aria-label="notifications ? 'Отключить уведомления' : 'Включить уведомления'" @click="notifications = !notifications; ElMessage.info(notifications ? 'Уведомления включены' : 'Уведомления отключены')"><Bell /></button>
           <button class="icon-button" aria-label="Справка" @click="dialog = 'help'"><CircleHelp /></button>
           <span class="toolbar-divider" />
